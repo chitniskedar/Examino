@@ -1,0 +1,46 @@
+/* styles.css — Examino global styles
+   All page-specific styles are in index.html <style>.
+   Use this file for any component overrides or extra theming. */
+
+/* ── Custom scrollbar ─────────────────────────────────────────────────── */
+::-webkit-scrollbar          { width: 6px; height: 6px; }
+::-webkit-scrollbar-track    { background: transparent; }
+::-webkit-scrollbar-thumb    { background: #2a3024; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #3a4434; }
+
+/* ── Code syntax highlight tweaks ────────────────────────────────────── */
+pre code { tab-size: 2; }
+
+/* ── Selection colour ─────────────────────────────────────────────────── */
+::selection      { background: rgba(168,224,99,.25); color: #eef5e0; }
+::-moz-selection { background: rgba(168,224,99,.25); color: #eef5e0; }
+
+/* ── Focus ring ───────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid rgba(168,224,99,.6);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Smooth image rendering ───────────────────────────────────────────── */
+img { image-rendering: -webkit-optimize-contrast; }
+
+/* ── Utility classes ──────────────────────────────────────────────────── */
+.mono  { font-family: 'DM Mono', monospace; }
+.serif { font-family: 'DM Serif Display', serif; }
+.sans  { font-family: 'DM Sans', sans-serif; }
+
+.text-accent  { color: #a8e063; }
+.text-amber   { color: #f5a623; }
+.text-red     { color: #e05c5c; }
+.text-blue    { color: #63c4e0; }
+.text-dim     { color: #6b7a5a; }
+.text-head    { color: #eef5e0; }
+
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: 8px; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+.mt-4 { margin-top: 32px; }
+
+.hidden { display: none !important; }

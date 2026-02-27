@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Examino — PESU Study Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#09090b;--s1:#111114;--s2:#18181c;
+  --b1:#27272a;--b2:#3f3f46;
+  --accent:#b5f23d;--amber:#f59e0b;--red:#ef4444;--blue:#38bdf8;--purple:#a78bfa;
+  --text:#d4d4d8;--dim:#52525b;--head:#fafafa;--code:#09090b;--r:10px;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Quantico',sans-serif;font-weight:400;
+  min-height:100vh;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0;
+}
+.wrap{max-width:1060px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+
+/* HEADER */
+header{border-bottom:1px solid var(--b1);position:sticky;top:0;background:rgba(9,9,11,.93);backdrop-filter:blur(20px);z-index:100}
+.hdr-inner{display:flex;align-items:center;justify-content:space-between;max-width:1060px;margin:0 auto;padding:16px 28px}
+.logo{font-family:'Quantico',sans-serif;font-size:1.5rem;color:var(--head);display:flex;align-items:center;gap:12px}
+.logo-pip{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);animation:pip 2.8s ease-in-out infinite}
+@keyframes pip{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.65)}}
+.logo-badge{font-family:'Quantico',sans-serif;font-size:.58rem;color:var(--dim);letter-spacing:.1em;border:1px solid var(--b1);border-radius:99px;padding:2px 9px}
+nav{display:flex;gap:4px}
+.nav-btn{background:transparent;border:1px solid var(--b1);color:var(--dim);padding:7px 18px;border-radius:8px;cursor:pointer;font-family:'Quantico',sans-serif;font-size:.68rem;letter-spacing:.05em;transition:all .2s}
+.nav-btn:hover,.nav-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(181,242,61,.04)}
+
+/* PAGES */
+.page{display:none;padding:40px 0 100px}
+.page.visible{display:block}
+
+/* HERO */
+.hero{padding:72px 0 52px;text-align:center}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;font-family:'Quantico',sans-serif;font-size:.6rem;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(181,242,61,.22);border-radius:99px;padding:5px 14px;margin-bottom:26px}
+.hero-pill-dot{width:5px;height:5px;background:var(--accent);border-radius:50%}
+.hero-title{font-family:'Quantico',sans-serif;font-size:clamp(2.8rem,6.5vw,4.6rem);color:var(--head);line-height:1.08;letter-spacing:-.02em;margin-bottom:22px}
+.hero-title i{font-style:italic;color:var(--accent)}
+.hero-sub{color:var(--dim);font-size:.95rem;max-width:420px;margin:0 auto 48px;line-height:1.8}
+
+/* SUBJECT GRID */
+.subj-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:48px}
+.subj-card{background:var(--s1);border:1px solid var(--b1);border-radius:12px;padding:18px 16px;cursor:pointer;transition:border-color .22s,background .22s,transform .22s;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0}
+.subj-card:hover,.subj-card.sel{border-color:var(--accent);background:rgba(181,242,61,.04);transform:translateY(-3px);box-shadow:0 8px 24px rgba(181,242,61,.07)}
+.subj-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid var(--b2)}
+.subj-icon svg{width:18px;height:18px}
+.subj-name{font-family:'Quantico',sans-serif;font-size:.9rem;color:var(--head)}
+.subj-meta{font-family:'Quantico',sans-serif;font-size:.6rem;color:var(--dim)}
+
+/* SECTION HDR */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.sec-title{font-family:'Quantico',sans-serif;font-size:1.35rem;color:var(--head)}
+
+/* STAT TILES */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:32px}
+.stat-tile{background:var(--s1);border:1px solid var(--b1);border-radius:12px;padding:22px 24px;position:relative;overflow:hidden}
+.stat-tile::after{content:'';position:absolute;top:-30px;right:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,var(--glow) 0%,transparent 70%);opacity:.3;pointer-events:none}
+.t-green{--glow:rgba(181,242,61,.6)}.t-amber{--glow:rgba(245,158,11,.6)}.t-blue{--glow:rgba(56,189,248,.6)}
+.stat-num{font-family:'Quantico',sans-serif;font-size:2.9rem;color:var(--head);line-height:1;margin-bottom:5px;letter-spacing:-.04em}
+.stat-lbl{font-family:'Quantico',sans-serif;font-size:.6rem;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
+
+/* QUESTION CARD */
+.q-card{background:var(--s1);border:1px solid var(--b1);border-radius:14px;overflow:hidden;margin-bottom:14px;opacity:0}
+.q-hdr{display:flex;align-items:center;gap:10px;padding:13px 20px;border-bottom:1px solid var(--b1);background:var(--s2)}
+.q-badge{font-family:'Quantico',sans-serif;font-size:.6rem;padding:3px 10px;border-radius:99px;font-weight:500;letter-spacing:.05em;border:1px solid}
+.b-mcq       {color:var(--blue);  border-color:var(--blue);  background:rgba(56,189,248,.07)}
+.b-true_false{color:var(--amber); border-color:var(--amber); background:rgba(245,158,11,.07)}
+.b-fill_blank{color:var(--purple);border-color:var(--purple);background:rgba(167,139,250,.07)}
+.b-code      {color:var(--accent);border-color:var(--accent);background:rgba(181,242,61,.05)}
+.b-complexity{color:var(--red);   border-color:var(--red);   background:rgba(239,68,68,.07)}
+.q-meta{font-family:'Quantico',sans-serif;font-size:.6rem;color:var(--dim)}
+.q-subject{margin-left:auto;font-family:'Quantico',sans-serif;font-size:.6rem;color:var(--dim)}
+.q-diff{font-family:'Quantico',sans-serif;font-size:.6rem;padding:2px 8px;border-radius:99px;border:1px solid}
+.d-easy  {color:var(--accent);border-color:rgba(181,242,61,.3)}
+.d-medium{color:var(--amber); border-color:rgba(245,158,11,.3)}
+.d-hard  {color:var(--red);   border-color:rgba(239,68,68,.3)}
+.q-body{padding:22px 22px 0}
+.q-text{font-size:.93rem;line-height:1.78;color:var(--text);white-space:pre-wrap}
+.q-text pre{background:var(--code);border:1px solid var(--b1);border-radius:8px;padding:14px 18px;display:block;margin:14px 0;font-family:'Quantico',sans-serif;font-size:.8rem;color:var(--accent);line-height:1.65;overflow-x:auto;white-space:pre}
+.q-text code{font-family:'Quantico',sans-serif;font-size:.82rem;background:var(--s2);border:1px solid var(--b1);border-radius:4px;padding:1px 6px;color:var(--accent)}
+
+/* OPTIONS */
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+.opt{background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:12px 16px;cursor:pointer;font-size:.88rem;transition:border-color .18s,background .18s;display:flex;align-items:flex-start;gap:12px}
+.opt:hover{border-color:var(--blue);background:rgba(56,189,248,.04)}
+.opt.sel  {border-color:var(--accent);background:rgba(181,242,61,.05);color:var(--accent)}
+.opt.ok   {border-color:var(--accent);background:rgba(181,242,61,.09);color:var(--accent);cursor:default}
+.opt.bad  {border-color:var(--red);  background:rgba(239,68,68,.07); color:var(--red);   cursor:default}
+.opt-lbl{min-width:24px;height:24px;border-radius:6px;background:var(--b1);font-family:'Quantico',sans-serif;font-size:.65rem;font-weight:500;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--dim)}
+.fill-in{background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:11px 16px;color:var(--text);font-family:'Quantico',sans-serif;font-size:.86rem;width:100%;margin-top:16px;outline:none;transition:border-color .2s}
+.fill-in:focus{border-color:var(--accent)}
+
+/* FOOT */
+.q-foot{padding:14px 22px 20px}
+.btn-sub{background:transparent;border:1px solid var(--b2);color:var(--text);padding:9px 22px;border-radius:99px;font-family:'Quantico',sans-serif;font-size:.7rem;letter-spacing:.05em;cursor:pointer;transition:all .2s}
+.btn-sub:hover{border-color:var(--accent);color:var(--accent);background:rgba(181,242,61,.04)}
+.btn-sub:disabled{opacity:.3;cursor:default}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:.82rem;display:none;line-height:1.65}
+.feedback.ok {background:rgba(181,242,61,.06);border:1px solid rgba(181,242,61,.22);color:var(--accent)}
+.feedback.bad{background:rgba(239,68,68,.06); border:1px solid rgba(239,68,68,.22); color:var(--red)}
+.feedback.show{display:block}
+
+/* CHIPS */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.chip{background:var(--s1);border:1px solid var(--b1);color:var(--dim);padding:6px 14px;border-radius:99px;font-family:'Quantico',sans-serif;font-size:.68rem;cursor:pointer;transition:all .2s}
+.chip:hover,.chip.active{border-color:var(--accent);color:var(--accent);background:rgba(181,242,61,.04)}
+
+/* STATS */
+.sp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.sp-card{background:var(--s1);border:1px solid var(--b1);border-radius:12px;padding:20px;opacity:0}
+.sp-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sp-name{font-family:'Quantico',sans-serif;font-size:1rem;color:var(--head);display:flex;align-items:center;gap:8px}
+.sp-acc{font-family:'Quantico',sans-serif;font-size:.72rem;padding:3px 10px;border-radius:99px;border:1px solid}
+.ring-wrap{display:flex;align-items:center;gap:14px}
+.ring{position:relative;width:56px;height:56px;flex-shrink:0}
+.ring svg{width:56px;height:56px;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--b1);stroke-width:4.5}
+.ring-fill{fill:none;stroke-width:4.5;stroke-linecap:round}
+.ring-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Quantico',sans-serif;font-size:.62rem;color:var(--head)}
+.ri-n{font-size:.88rem;color:var(--text);margin-bottom:2px}
+.ri-m{font-family:'Quantico',sans-serif;font-size:.62rem;color:var(--dim)}
+.t-table{width:100%;border-collapse:collapse}
+.t-table th{font-family:'Quantico',sans-serif;font-size:.6rem;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--b1);text-align:left}
+.t-table td{padding:10px 12px;border-bottom:1px solid var(--b1);font-size:.84rem;vertical-align:middle}
+.t-table tr:last-child td{border-bottom:none}
+.t-table tr:hover td{background:rgba(255,255,255,.013)}
+.pbar{background:var(--b1);border-radius:99px;height:4px;overflow:hidden;width:90px}
+.pbar-f{height:100%;border-radius:99px}
+.pg{background:var(--accent)}.pm{background:var(--amber)}.pr{background:var(--red)}
+
+/* TOAST */
+#toast{position:fixed;bottom:24px;right:24px;background:var(--s2);border:1px solid var(--b2);color:var(--text);padding:12px 20px;border-radius:10px;font-family:'Quantico',sans-serif;font-size:.72rem;z-index:999;pointer-events:none;opacity:0;transform:translateY(16px);transition:opacity .25s,transform .25s;max-width:300px}
+#toast.show{opacity:1;transform:translateY(0)}
+#toast.ok {border-color:rgba(181,242,61,.4);color:var(--accent)}
+#toast.err{border-color:rgba(239,68,68,.4); color:var(--red)}
+
+/* SPINNER */
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--b2);border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.empty{text-align:center;padding:64px 20px;color:var(--dim);font-size:.9rem}
+.empty h3{font-family:'Quantico',sans-serif;font-size:1.4rem;color:var(--text);margin-bottom:8px}
+.card{background:var(--s1);border:1px solid var(--b1);border-radius:12px;padding:24px}
+
+@media(max-width:680px){
+  .subj-grid{grid-template-columns:repeat(2,1fr)}
+  .stat-row,.sp-grid{grid-template-columns:1fr}
+  .hero-title{font-size:2.4rem}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-inner">
+    <div class="logo">
+      <span class="logo-pip"></span>
+      Examino
+      <span class="logo-badge">PESU · 1ST YEAR</span>
+    </div>
+    <nav>
+      <button class="nav-btn active" onclick="showPage('home')">Study</button>
+      <button class="nav-btn" onclick="showPage('quiz')">Practice</button>
+      <button class="nav-btn" onclick="showPage('stats')">Stats</button>
+    </nav>
+  </div>
+</header>
+
+<div id="toast"></div>
+
+<!-- SVG icon library -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="ico-chem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 3h6M9 3v6l-5 9a2 2 0 001.7 3h12.6A2 2 0 0020 18l-5-9V3"/>
+    </symbol>
+    <symbol id="ico-eee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+    </symbol>
+    <symbol id="ico-epd" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+      <path d="M3 9h18M9 21V9"/>
+    </symbol>
+    <symbol id="ico-evs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22V12M12 12C12 7 7 3 3 3c0 4 3 8 9 9M12 12c0-5 5-9 9-9-1 5-5 8-9 9"/>
+    </symbol>
+    <symbol id="ico-mes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>
+    </symbol>
+    <symbol id="ico-phys" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <ellipse cx="12" cy="12" rx="10" ry="4"/>
+      <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/>
+      <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>
+      <circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/>
+    </symbol>
+    <symbol id="ico-py" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2C8 2 7 4 7 6v2h5v1H6C4 9 2 10 2 13s2 4 4 4h2v-2c0-2 2-3 4-3s4 1 4 3v2h2c2 0 4-1 4-4s-2-4-4-4h-1V6c0-2-1-4-5-4z"/>
+      <circle cx="9.5" cy="6" r="1" fill="currentColor" stroke="none"/>
+      <circle cx="14.5" cy="18" r="1" fill="currentColor" stroke="none"/>
+    </symbol>
+    <symbol id="ico-stat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 21h18M12 3L3 21h18L12 3z"/>
+      <path d="M12 10v5"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ═══════ HOME ═══════ -->
+<div id="page-home" class="page visible">
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-pill"><span class="hero-pill-dot"></span>adaptive assessment engine</div>
+    <h1 class="hero-title" id="hero-title">Study smarter,<br>not <i>harder.</i></h1>
+    <p class="hero-sub" id="hero-sub">All 8 PESU first-year subjects pre-loaded. Pick a subject and start practising — Examino adapts to your level automatically.</p>
+  </div>
+  <div class="sec-hdr">
+    <span class="sec-title">Subjects</span>
+    <span id="qs-label" style="font-family:'Quantico',sans-serif;font-size:.68rem;color:var(--dim)"></span>
+  </div>
+  <div class="subj-grid" id="subj-grid"></div>
+  <div class="sec-hdr"><span class="sec-title">Overview</span></div>
+  <div class="stat-row">
+    <div class="stat-tile t-green"><div class="stat-num" id="h-qs">—</div><div class="stat-lbl">Questions</div></div>
+    <div class="stat-tile t-amber"><div class="stat-num" id="h-att">—</div><div class="stat-lbl">Attempts</div></div>
+    <div class="stat-tile t-blue"> <div class="stat-num" id="h-acc">—</div><div class="stat-lbl">Accuracy</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════ QUIZ ═══════ -->
+<div id="page-quiz" class="page">
+<div class="wrap">
+  <div class="sec-hdr" style="margin-top:4px">
+    <span class="sec-title" id="quiz-title">Practice</span>
+    <button class="nav-btn" onclick="loadQs()">↻ Refresh</button>
+  </div>
+  <div class="chips" id="s-chips"></div>
+  <div class="chips" id="t-chips">
+    <span class="chip active" onclick="setType(this,'all')">All Types</span>
+    <span class="chip" onclick="setType(this,'mcq')">MCQ</span>
+    <span class="chip" onclick="setType(this,'true_false')">True / False</span>
+    <span class="chip" onclick="setType(this,'code')">Code</span>
+  </div>
+  <div id="q-list"></div>
+</div>
+</div>
+
+<!-- ═══════ STATS ═══════ -->
+<div id="page-stats" class="page">
+<div class="wrap">
+  <div class="sec-hdr" style="margin-top:4px">
+    <span class="sec-title">Performance Board</span>
+    <button class="nav-btn" onclick="loadStats()">↻ Refresh</button>
+  </div>
+  <div class="stat-row">
+    <div class="stat-tile t-green"><div class="stat-num" id="s-att">—</div><div class="stat-lbl">Total Attempts</div></div>
+    <div class="stat-tile t-amber"><div class="stat-num" id="s-acc">—</div><div class="stat-lbl">Accuracy</div></div>
+    <div class="stat-tile t-blue"> <div class="stat-num" id="s-top">—</div><div class="stat-lbl">Topics Tracked</div></div>
+  </div>
+  <div class="sec-hdr"><span class="sec-title">By Subject</span></div>
+  <div class="sp-grid" id="sp-grid"></div>
+  <div class="card">
+    <div style="margin-bottom:16px"><span class="sec-title" style="font-size:1.05rem">Topic Breakdown</span></div>
+    <div id="t-table-wrap">
+      <div class="empty" style="padding:20px 0"><h3>No data yet</h3><p>Answer questions to populate this.</p></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// ── Dynamic API URL: works when opened as file:// OR served via uvicorn ───────
+const API = window.location.protocol === 'file:'
+  ? 'http://localhost:8000'
+  : window.location.origin;
+
+const SUBJECTS = {
+  Chemistry:{ ico:'ico-chem', col:'#38bdf8' },
+  EEE:      { ico:'ico-eee',  col:'#f59e0b' },
+  EPD:      { ico:'ico-epd',  col:'#b5f23d' },
+  EVS:      { ico:'ico-evs',  col:'#34d399' },
+  MES:      { ico:'ico-mes',  col:'#e0b063' },
+  Physics:  { ico:'ico-phys', col:'#a78bfa' },
+  Python:   { ico:'ico-py',   col:'#b5f23d' },
+  Statics:  { ico:'ico-stat', col:'#f59e0b' },
+};
+
+let allQs=[], subjF='all', typeF='all', answered={}, selected={};
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function toast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `show ${type}`;
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className='', 3200);
+}
+
+// ── Nav ───────────────────────────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('visible'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const page = document.getElementById(`page-${name}`);
+  page.classList.add('visible');
+  document.querySelectorAll('.nav-btn')[{home:0,quiz:1,stats:2}[name]]?.classList.add('active');
+  anime({ targets:page, opacity:[0,1], translateY:[14,0], duration:360, easing:'easeOutCubic' });
+  if (name==='home')  initHome();
+  if (name==='quiz')  loadQs();
+  if (name==='stats') loadStats();
+}
+
+// ── Animated count-up ─────────────────────────────────────────────────────────
+function countUp(id, target) {
+  const el = document.getElementById(id);
+  if (!el || !target) return;
+  anime({ targets:{v:0}, v:target, duration:900, easing:'easeOutExpo',
+    update(a){ el.textContent = Math.round(a.animations[0].currentValue); }
+  });
+}
+
+// ── HOME ──────────────────────────────────────────────────────────────────────
+async function initHome() {
+  anime({ targets:'#hero-title', opacity:[0,1], translateY:[22,0], duration:640, easing:'easeOutExpo', delay:60 });
+  anime({ targets:'#hero-sub',   opacity:[0,1], translateY:[14,0], duration:640, easing:'easeOutExpo', delay:160 });
+
+  try {
+    const [sRes, stRes] = await Promise.all([fetch(`${API}/subjects`), fetch(`${API}/stats`)]);
+    if (!sRes.ok || !stRes.ok) throw new Error('API error');
+    const subjects = await sRes.json();
+    const stats    = await stRes.json();
+
+    document.getElementById('h-qs').textContent  = stats.total_questions ?? 0;
+    document.getElementById('h-acc').textContent = stats.total_attempts>0 ? `${stats.overall_accuracy}%` : '—';
+    document.getElementById('qs-label').textContent = `${stats.total_questions} questions · ${subjects.length} subjects`;
+    countUp('h-qs', stats.total_questions ?? 0);
+    countUp('h-att', stats.total_attempts ?? 0);
+
+    const grid = document.getElementById('subj-grid');
+    grid.innerHTML = subjects.map(s => {
+      const m   = SUBJECTS[s] || { ico:'ico-stat', col:'#b5f23d' };
+      const bys = stats.by_subject?.[s];
+      const meta = bys ? `${bys.attempts} attempts · ${bys.accuracy}%` : 'Start practising';
+      return `<div class="subj-card" onclick="goQuiz('${s}')">
+        <div class="subj-icon" style="color:${m.col}">
+          <svg><use href="#${m.ico}"/></svg>
+        </div>
+        <div class="subj-name">${s}</div>
+        <div class="subj-meta">${meta}</div>
+      </div>`;
+    }).join('');
+
+    anime({ targets:'.subj-card', opacity:[0,1], translateY:[20,0],
+      delay:anime.stagger(55,{start:200}), duration:440, easing:'easeOutCubic' });
+
+  } catch(e) {
+    document.getElementById('subj-grid').innerHTML =
+      `<div class="empty" style="grid-column:1/-1"><h3>API offline</h3>
+       <p>Run <code style="color:var(--accent);font-family:'Quantico',sans-serif">uvicorn main:app --reload</code> in the backend folder.</p></div>`;
+  }
+}
+
+function goQuiz(s) { subjF=s; showPage('quiz'); }
+
+// ── QUIZ ──────────────────────────────────────────────────────────────────────
+async function loadQs() {
+  const list = document.getElementById('q-list');
+  list.innerHTML = `<div style="text-align:center;padding:60px"><span class="spin"></span></div>`;
+
+  // Rebuild subject chips
+  try {
+    const subjects = await (await fetch(`${API}/subjects`)).json();
+    document.getElementById('s-chips').innerHTML =
+      `<span class="chip${subjF==='all'?' active':''}" onclick="setSubj(this,'all')">All</span>`
+      + subjects.map(s=>`<span class="chip${subjF===s?' active':''}" onclick="setSubj(this,'${s}')">${s}</span>`).join('');
+  } catch(_){}
+
+  try {
+    const url = subjF!=='all'
+      ? `${API}/questions?subject=${encodeURIComponent(subjF)}&limit=30`
+      : `${API}/questions?limit=30`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    allQs = await res.json();
+    answered={}; selected={};
+    document.getElementById('quiz-title').textContent = subjF!=='all' ? subjF : 'Practice';
+    renderQs();
+  } catch(e) {
+    list.innerHTML = `<div class="empty"><h3>Cannot reach API</h3>
+      <p>Make sure uvicorn is running.<br>
+      <code style="color:var(--accent);font-family:'Quantico',sans-serif">cd backend &amp;&amp; uvicorn main:app --reload</code></p></div>`;
+  }
+}
+
+function setSubj(el,val){
+  document.querySelectorAll('#s-chips .chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active'); subjF=val; loadQs();
+}
+function setType(el,val){
+  document.querySelectorAll('#t-chips .chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active'); typeF=val; renderQs();
+}
+
+function renderQs(){
+  const list=document.getElementById('q-list');
+  const filtered=allQs.filter(q=>typeF==='all'||q.question_type===typeF);
+  if(!filtered.length){list.innerHTML=`<div class="empty"><h3>No questions</h3><p>Try a different filter.</p></div>`;return;}
+  list.innerHTML=filtered.map(q=>buildQ(q)).join('');
+  anime({ targets:'.q-card', opacity:[0,1], translateY:[16,0],
+    delay:anime.stagger(40), duration:380, easing:'easeOutCubic' });
+}
+
+const TL={mcq:'MCQ',true_false:'True / False',fill_blank:'Fill Blank',code:'Code',complexity:'Complexity'};
+const KS=['A','B','C','D','E'];
+
+function buildQ(q){
+  const txt=q.question_text
+    .replace(/```([\s\S]*?)```/g,'<pre>$1</pre>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>');
+  let inp='';
+  if(q.question_type==='fill_blank'){
+    inp=`<input class="fill-in" id="fi-${q.question_id}" placeholder="Your answer…"/>`;
+  } else if(q.options?.length){
+    inp=`<div class="opts">${q.options.map((o,i)=>`
+      <div class="opt" id="op-${q.question_id}-${i}" onclick="selOpt('${q.question_id}',${i},'${esc(o)}')">
+        <span class="opt-lbl">${KS[i]}</span>${escH(o)}
+      </div>`).join('')}</div>`;
+  }
+  return `<div class="q-card" id="qc-${q.question_id}">
+    <div class="q-hdr">
+      <span class="q-badge b-${q.question_type}">${TL[q.question_type]||q.question_type}</span>
+      <span class="q-meta">${q.topic}</span>
+      <span class="q-subject">${q.subject} · ${q.unit||''}</span>
+      <span class="q-diff d-${q.difficulty_level}">${q.difficulty_level}</span>
+    </div>
+    <div class="q-body"><div class="q-text">${txt}</div>${inp}</div>
+    <div class="q-foot">
+      <button class="btn-sub" id="btn-${q.question_id}"
+              onclick="submitA('${q.question_id}','${q.question_type}')">Submit</button>
+      <div class="feedback" id="fb-${q.question_id}"></div>
+    </div>
+  </div>`;
+}
+
+function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function esc(s){return String(s).replace(/'/g,"\\'")}
+
+function selOpt(qid,idx,val){
+  document.querySelectorAll(`[id^="op-${qid}-"]`).forEach(e=>e.classList.remove('sel'));
+  const el=document.getElementById(`op-${qid}-${idx}`);
+  el?.classList.add('sel'); selected[qid]=val;
+  anime({ targets:el, scale:[.97,1], duration:180, easing:'easeOutBack' });
+}
+
+async function submitA(qid,qtype){
+  if(answered[qid]) return;
+  const ans = qtype==='fill_blank'
+    ? (document.getElementById(`fi-${qid}`)?.value?.trim()||'')
+    : (selected[qid]||'');
+  if(!ans){ toast('Pick or type an answer first','err'); return; }
+
+  const btn=document.getElementById(`btn-${qid}`);
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span>';
+
+  try {
+    const res = await fetch(`${API}/attempt`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({question_id:qid, user_answer:ans}),
+    });
+    if(!res.ok){
+      const err=await res.json().catch(()=>({}));
+      throw new Error(err.detail||`HTTP ${res.status}`);
+    }
+    const d=await res.json();
+    answered[qid]=true; btn.style.display='none';
+
+    document.querySelectorAll(`[id^="op-${qid}-"]`).forEach(el=>{
+      const t=el.textContent.trim().replace(/^[A-E]\s*/,'');
+      if(t===d.correct_answer.trim()||el.textContent.includes(d.correct_answer.trim()))
+        el.classList.add('ok');
+      else if(el.classList.contains('sel'))
+        el.classList.add('bad');
+      el.style.cursor='default';
+    });
+
+    const fb=document.getElementById(`fb-${qid}`);
+    fb.className=`feedback show ${d.correct?'ok':'bad'}`;
+    fb.innerHTML=`${d.correct?'✓ Correct!':'✗ Incorrect'} — ${escH(d.explanation)}
+      <span style="font-family:'Quantico',sans-serif;font-size:.6rem;display:block;margin-top:4px;opacity:.55">
+        difficulty → ${d.new_difficulty}</span>`;
+
+    // Animate feedback in
+    anime({ targets:fb, opacity:[0,1], translateY:[8,0], duration:280, easing:'easeOutCubic' });
+
+    // Shake card on wrong answer
+    if(!d.correct){
+      anime({ targets:`#qc-${qid}`, translateX:[0,-7,7,-5,5,-3,3,0], duration:400, easing:'easeInOutSine' });
+      toast(`Answer: ${d.correct_answer}`, 'err');
+    } else {
+      // Pulse border green on correct
+      anime({ targets:`#qc-${qid}`, borderColor:['#27272a','#b5f23d','#27272a'], duration:700, easing:'easeInOutQuad' });
+      toast('Correct!');
+    }
+
+  } catch(e){
+    btn.disabled=false; btn.textContent='Submit';
+    toast(e.message||'Could not reach the API', 'err');
+  }
+}
+
+// ── STATS ─────────────────────────────────────────────────────────────────────
+async function loadStats(){
+  try{
+    const res=await fetch(`${API}/stats`);
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data=await res.json();
+
+    document.getElementById('s-att').textContent=data.total_attempts??0;
+    document.getElementById('s-acc').textContent=data.total_attempts>0?`${data.overall_accuracy}%`:'—';
+    document.getElementById('s-top').textContent=data.topics?.length??0;
+    countUp('s-att', data.total_attempts??0);
+
+    const grid=document.getElementById('sp-grid');
+    const bySub=data.by_subject||{};
+    const keys=Object.keys(bySub);
+
+    if(!keys.length){
+      grid.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty" style="padding:20px 0"><h3>No data yet</h3></div></div>`;
+    } else {
+      grid.innerHTML=keys.map(s=>{
+        const d=bySub[s];
+        const m=SUBJECTS[s]||{ico:'ico-stat',col:'#b5f23d'};
+        const pct=d.accuracy;
+        const col=pct>=70?'var(--accent)':pct>=40?'var(--amber)':'var(--red)';
+        const r=22,circ=2*Math.PI*r,dash=circ-(pct/100)*circ;
+        return `<div class="sp-card">
+          <div class="sp-hdr">
+            <span class="sp-name">
+              <svg width="16" height="16" style="color:${m.col}"><use href="#${m.ico}"/></svg>${s}
+            </span>
+            <span class="sp-acc" style="color:${col};border-color:${col}">${pct}%</span>
+          </div>
+          <div class="ring-wrap">
+            <div class="ring">
+              <svg viewBox="0 0 56 56">
+                <circle class="ring-bg" cx="28" cy="28" r="${r}"/>
+                <circle class="ring-fill" cx="28" cy="28" r="${r}"
+                  stroke="${col}" stroke-dasharray="${circ}" stroke-dashoffset="${circ}"
+                  data-target="${dash}" id="ring-${s.replace(/\s/g,'_')}"/>
+              </svg>
+              <div class="ring-val">${pct}%</div>
+            </div>
+            <div>
+              <div class="ri-n">${d.attempts} attempts</div>
+              <div class="ri-m">${d.correct} correct</div>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+
+      // Animate ring fills
+      anime({
+        targets:'.ring-fill',
+        strokeDashoffset(el){ return [parseFloat(el.getAttribute('stroke-dasharray')), parseFloat(el.getAttribute('data-target'))]; },
+        duration:900, delay:anime.stagger(80), easing:'easeOutCubic',
+      });
+      // Stagger cards
+      anime({ targets:'.sp-card', opacity:[0,1], translateY:[14,0],
+        delay:anime.stagger(70), duration:400, easing:'easeOutCubic' });
+    }
+
+    // Topic table
+    const wrap=document.getElementById('t-table-wrap');
+    if(!data.topics?.length){
+      wrap.innerHTML=`<div class="empty" style="padding:20px 0"><h3>No topic data</h3></div>`;return;
+    }
+    wrap.innerHTML=`<table class="t-table">
+      <thead><tr><th>Topic</th><th>Subject</th><th>Accuracy</th><th>Attempts</th><th>Difficulty</th></tr></thead>
+      <tbody>${data.topics.map(t=>{
+        const pct=t.accuracy;
+        const fc=pct>=70?'pg':pct>=40?'pm':'pr';
+        const dc={easy:'var(--accent)',medium:'var(--amber)',hard:'var(--red)'}[t.difficulty]||'var(--dim)';
+        return `<tr>
+          <td>${escH(t.topic)}</td>
+          <td style="font-family:'Quantico',sans-serif;font-size:.68rem;color:var(--dim)">${t.subject}</td>
+          <td><div style="display:flex;align-items:center;gap:10px">
+            <div class="pbar"><div class="pbar-f ${fc}" style="width:${pct}%"></div></div>
+            <span style="font-family:'Quantico',sans-serif;font-size:.7rem">${pct}%</span>
+          </div></td>
+          <td style="font-family:'Quantico',sans-serif;font-size:.72rem">${t.attempts}</td>
+          <td style="font-family:'Quantico',sans-serif;font-size:.68rem;color:${dc}">${t.difficulty}</td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>`;
+    anime({ targets:'.t-table tbody tr', opacity:[0,1], translateX:[-10,0],
+      delay:anime.stagger(25), duration:280, easing:'easeOutCubic' });
+
+  } catch(e){
+    document.getElementById('sp-grid').innerHTML=
+      `<div class="card" style="grid-column:1/-1;color:var(--red);font-family:'Quantico',sans-serif;font-size:.78rem">
+        API not reachable — start uvicorn first.</div>`;
+  }
+}
+
+initHome();
+</script>
+</body>
+</html>
