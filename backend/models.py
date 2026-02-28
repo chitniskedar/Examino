@@ -13,12 +13,18 @@ class Question(Base):
     question_text    = Column(Text,    nullable=False)
     options          = Column(JSON,    nullable=True)
     correct_answer   = Column(String,  nullable=False)
+
     topic            = Column(String,  nullable=False)
     subject          = Column(String,  nullable=False, default="General")
     unit             = Column(String,  nullable=True)
+
     difficulty_level = Column(String,  default="medium")
-    created_at       = Column(DateTime, default=datetime.utcnow)
+
     source_file      = Column(String,  nullable=True)
+    source_type      = Column(String,  nullable=True)     # QB or QnA
+    question_format  = Column(String,  nullable=True)     # MCQ / 2M / 5M converted
+
+    created_at       = Column(DateTime, default=datetime.utcnow)
 
 
 class Attempt(Base):
@@ -28,9 +34,11 @@ class Attempt(Base):
     question_id  = Column(String,  nullable=False)
     user_answer  = Column(String,  nullable=False)
     is_correct   = Column(Boolean, nullable=False)
+
     topic        = Column(String,  nullable=False)
     subject      = Column(String,  nullable=False, default="General")
     difficulty   = Column(String,  nullable=False)
+
     attempted_at = Column(DateTime, default=datetime.utcnow)
 
 
@@ -39,8 +47,11 @@ class TopicStats(Base):
 
     topic              = Column(String, primary_key=True)
     subject            = Column(String, nullable=False, default="General")
+
     total_attempts     = Column(Integer, default=0)
     correct_count      = Column(Integer, default=0)
     accuracy           = Column(Float,   default=0.0)
+
     current_difficulty = Column(String,  default="medium")
+
     last_updated       = Column(DateTime, default=datetime.utcnow)

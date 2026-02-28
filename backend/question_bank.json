@@ -1,0 +1,166 @@
+{
+  "Chemistry": [
+    {
+      "type": "mcq",
+      "q": "The Born-Oppenheimer approximation states that the total energy of a molecule is:",
+      "opts": [
+        "Only the sum of kinetic energies",
+        "The sum of translational, rotational, vibrational and electronic energies",
+        "Only the electronic energy",
+        "The product of all energy levels"
+      ],
+      "a": "The sum of translational, rotational, vibrational and electronic energies",
+      "topic": "Molecular Spectroscopy",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {"type":"mcq",
+ "q":"The Nernst equation for an electrode is E = E° + (0.0591/n)log[Mⁿ⁺]. For a zinc electrode (n=2) with [Zn²⁺] = 0.05M, the correction term is:",
+ "opts":["+0.039 V","-0.039 V","+0.0591 V","-0.0591 V"],
+ "a":"-0.039 V",
+ "topic":"Electrochemistry",
+ "unit":"Unit-2",
+ "diff":"hard"},
+    {
+      "type": "mcq",
+      "q": "The standard hydrogen electrode (SHE) has a potential of:",
+      "opts": [
+        "0.00 V",
+        "1.00 V",
+        "-0.76 V",
+        "+0.34 V"
+      ],
+      "a": "0.00 V",
+      "topic": "Electrochemistry",
+      "unit": "Unit-2",
+      "diff": "easy"
+    }
+  ],
+
+  "EEE": [
+    {
+      "type": "mcq",
+      "q": "KCL states that at any node:",
+      "opts": [
+        "Sum of all voltages is zero",
+        "Sum of currents entering equals sum of currents leaving",
+        "Total power is zero",
+        "Sum of resistances equals total resistance"
+      ],
+      "a": "Sum of currents entering equals sum of currents leaving",
+      "topic": "Network Theorems",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "The RMS value of a sinusoidal waveform with peak value Vm is:",
+      "opts": [
+        "Vm",
+        "Vm/2",
+        "Vm/√2",
+        "Vm×√2"
+      ],
+      "a": "Vm/√2",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "easy"
+    }
+  ],
+
+  "EPD": [
+    {
+      "type": "mcq",
+      "q": "A PN junction diode under forward bias has its depletion region:",
+      "opts": [
+        "Widened",
+        "Narrowed",
+        "Unchanged",
+        "Completely eliminated always"
+      ],
+      "a": "Narrowed",
+      "topic": "Diodes",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "The ripple factor of a full-wave rectifier is approximately:",
+      "opts": [
+        "1.21",
+        "0.48",
+        "0.82",
+        "2.00"
+      ],
+      "a": "0.48",
+      "topic": "Rectifiers",
+      "unit": "Unit-2",
+      "diff": "medium"
+    }
+  ],
+
+  "EVS": [
+    {
+      "type": "mcq",
+      "q": "What are 'keystone species'?",
+      "opts": [
+        "Species which cannot undergo evolution",
+        "Species which do not affect the ecosystem",
+        "Species whose elimination seriously affects the ecosystem",
+        "Species which are currently evolving"
+      ],
+      "a": "Species whose elimination seriously affects the ecosystem",
+      "topic": "Ecosystems",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Which is NOT a renewable energy source?",
+      "opts": [
+        "Coal",
+        "Wind",
+        "Solar",
+        "Geothermal"
+      ],
+      "a": "Coal",
+      "topic": "Resources",
+      "unit": "Unit-1",
+      "diff": "easy"
+    }
+  ],
+
+  "MES": [
+    {
+      "type": "mcq",
+      "q": "The Zeroth Law of Thermodynamics forms the basis for:",
+      "opts": [
+        "Work measurement",
+        "Temperature measurement",
+        "Entropy calculation",
+        "Enthalpy calculation"
+      ],
+      "a": "Temperature measurement",
+      "topic": "Thermodynamics",
+      "unit": "Unit-1",
+      "diff": "easy"
+    }
+  ],
+
+  "Statics": [
+    {
+      "type": "mcq",
+      "q": "A body is in static equilibrium when:",
+      "opts": [
+        "Net force is zero only",
+        "Net moment is zero only",
+        "Both net force and net moment are zero",
+        "Velocity is constant"
+      ],
+      "a": "Both net force and net moment are zero",
+      "topic": "Equilibrium",
+      "unit": "Unit-1",
+      "diff": "easy"
+    }
+  ]
+}
