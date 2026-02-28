@@ -139,19 +139,41 @@ def _update_topic_stats(topic, subject, is_correct, db):
     # SAFETY: Prevent NoneType crashes
     if stats.total_attempts is None:
         stats.total_attempts = 0
-    if stats.correct_attempts is None:
-        stats.correct_attempts = 0
+    if stats.correct_count is None:
+        stats.correct_count = 0
 
     stats.total_attempts += 1
 
     if is_correct:
-        stats.correct_attempts += 1
+        stats.correct_count += 1
 
+    # Update accuracy
+    if stats.total_attempts > 0:
+        stats.accuracy = stats.correct_count / stats.total_attempts
+    
+    stats.last_updated = datetime.utcnow()
     db.commit()
+
+
 # ── STATS HELPERS ─────────────────────────────────────────────
 
-def get_topic_stats(topic: str, db: Session):
-    return db.query(TopicStats).filter_by(topic=topic).first()
+def get_topic_stats(topic: str, subject: str, db: Session):
+    return db.query(TopicStats).filter_by(topic=topic, subject=subject).first()
+
+
+def create_topic_stats(topic: str, subject: str, db: Session) -> TopicStats:
+    stats = TopicStats(
+        topic=topic,
+        subject=subject,
+        total_attempts=0,
+        correct_count=0,
+        accuracy=0.0,
+        current_difficulty="medium"
+    )
+    db.add(stats)
+    db.commit()
+    db.refresh(stats)
+    return stats
 
 
 def get_all_stats(db: Session):
