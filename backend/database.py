@@ -2,16 +2,24 @@ from sqlalchemy import create_engine, Column, String
 from sqlalchemy.orm import sessionmaker, Session
 from typing import Optional, Generator
 from datetime import datetime
-import os
-
 from models import Base, Question, Attempt, TopicStats
 
-BASE_DIR     = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, 'data', 'examino.db')}"
+# ✅ Render-safe SQLite location
+DATABASE_URL = "sqlite:////tmp/examino.db"
 
-engine       = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+engine = create_engine(
+    DATABASE_URL,
+    connect_args={"check_same_thread": False}
+)
 
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine
+)
+
+
+# ── INIT DB ─────────────────────────────────────────────
 
 def init_db() -> None:
     Base.metadata.create_all(bind=engine)
@@ -31,33 +39,28 @@ def save_questions(questions: list[dict], source_file: str, db: Session) -> int:
     inserted = 0
 
     for q in questions:
-        # Primary dedup: by question_id
         if db.query(Question).filter_by(question_id=q["question_id"]).first():
             continue
 
-        # Secondary dedup: by text_hash (prevents same question from different PDFs)
         if q.get("text_hash") and db.query(Question).filter_by(text_hash=q["text_hash"]).first():
             continue
 
         db.add(Question(
-            question_id      = q["question_id"],
-            question_type    = q["question_type"],
-            question_text    = q["question_text"],
-            options          = q.get("options"),
-            correct_answer   = q["correct_answer"],
-
-            topic            = q["topic"],
-            subject          = q.get("subject", "General"),
-            unit             = q.get("unit"),
-
-            difficulty_level = q.get("difficulty_level", "medium"),
-
-            source_file      = source_file,
-            source_type      = q.get("source_type"),
-            question_format  = q.get("question_format", "MCQ"),
-
-            text_hash        = q.get("text_hash"),
+            question_id=q["question_id"],
+            question_type=q["question_type"],
+            question_text=q["question_text"],
+            options=q.get("options"),
+            correct_answer=q["correct_answer"],
+            topic=q["topic"],
+            subject=q.get("subject", "General"),
+            unit=q.get("unit"),
+            difficulty_level=q.get("difficulty_level", "medium"),
+            source_file=source_file,
+            source_type=q.get("source_type"),
+            question_format=q.get("question_format", "MCQ"),
+            text_hash=q.get("text_hash"),
         ))
+
         inserted += 1
 
     db.commit()
@@ -74,24 +77,24 @@ def get_questions(
     limit: int = 20,
 ) -> list[Question]:
 
-    q = db.query(Question)
+    query = db.query(Question)
 
     if subject:
-        q = q.filter(Question.subject == subject)
+        query = query.filter(Question.subject == subject)
 
     if unit:
-        q = q.filter(Question.unit == unit)
+        query = query.filter(Question.unit == unit)
 
     if topic:
-        q = q.filter(Question.topic == topic)
+        query = query.filter(Question.topic == topic)
 
     if difficulty:
-        q = q.filter(Question.difficulty_level == difficulty)
+        query = query.filter(Question.difficulty_level == difficulty)
 
     if source:
-        q = q.filter(Question.source_type == source)
+        query = query.filter(Question.source_type == source)
 
-    return q.limit(limit).all()
+    return query.limit(limit).all()
 
 
 def get_question_by_id(question_id: str, db: Session) -> Optional[Question]:
@@ -108,7 +111,10 @@ def get_subjects(db: Session) -> list[str]:
 
 
 def get_units(db: Session, subject: str) -> list[str]:
-    rows = db.query(Question.unit).filter(Question.subject == subject).distinct().all()
+    rows = db.query(Question.unit).filter(
+        Question.subject == subject
+    ).distinct().all()
+
     return sorted([r[0] for r in rows if r[0]])
 
 
@@ -125,12 +131,12 @@ def record_attempt(
 ) -> None:
 
     db.add(Attempt(
-        question_id = question_id,
-        user_answer = user_answer,
-        is_correct  = is_correct,
-        topic       = topic,
-        subject     = subject,
-        difficulty  = difficulty,
+        question_id=question_id,
+        user_answer=user_answer,
+        is_correct=is_correct,
+        topic=topic,
+        subject=subject,
+        difficulty=difficulty,
     ))
 
     db.commit()
@@ -138,30 +144,30 @@ def record_attempt(
 
 
 def get_recent_attempts(db: Session, limit: int = 50) -> list[Attempt]:
-    return db.query(Attempt).order_by(Attempt.attempted_at.desc()).limit(limit).all()
+    return db.query(Attempt)\
+             .order_by(Attempt.attempted_at.desc())\
+             .limit(limit)\
+             .all()
 
 
 # ── STATS ─────────────────────────────────────────────
 
-def _update_topic_stats(topic, subject, is_correct, db):
+def _update_topic_stats(topic: str, subject: str, is_correct: bool, db: Session):
     stats = get_topic_stats(topic, subject, db)
 
     if not stats:
         stats = create_topic_stats(topic, subject, db)
 
-    if stats.total_attempts is None:
-        stats.total_attempts = 0
-    if stats.correct_count is None:
-        stats.correct_count = 0
-
-    stats.total_attempts += 1
+    stats.total_attempts = (stats.total_attempts or 0) + 1
 
     if is_correct:
-        stats.correct_count += 1
+        stats.correct_count = (stats.correct_count or 0) + 1
 
-    if stats.total_attempts > 0:
-        stats.accuracy = stats.correct_count / stats.total_attempts
-    
+    stats.accuracy = (
+        stats.correct_count / stats.total_attempts
+        if stats.total_attempts > 0 else 0.0
+    )
+
     stats.last_updated = datetime.utcnow()
     db.commit()
 
@@ -169,7 +175,9 @@ def _update_topic_stats(topic, subject, is_correct, db):
 # ── STATS HELPERS ─────────────────────────────────────────────
 
 def get_topic_stats(topic: str, subject: str, db: Session):
-    return db.query(TopicStats).filter_by(topic=topic, subject=subject).first()
+    return db.query(TopicStats)\
+             .filter_by(topic=topic, subject=subject)\
+             .first()
 
 
 def create_topic_stats(topic: str, subject: str, db: Session) -> TopicStats:
@@ -179,8 +187,9 @@ def create_topic_stats(topic: str, subject: str, db: Session) -> TopicStats:
         total_attempts=0,
         correct_count=0,
         accuracy=0.0,
-        current_difficulty="medium"
+        current_difficulty="medium",
     )
+
     db.add(stats)
     db.commit()
     db.refresh(stats)
