@@ -1,6 +1,6 @@
 # Examino
 
-> Adaptive MCQ practice system for PESU Semester 1 — with PDF-to-question generation.
+> Adaptive MCQ practice system — with PDF-to-question generation.
 
 ![Python](https://img.shields.io/badge/Python-3.10+-yellow?style=flat-square)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-yellow?style=flat-square)
@@ -87,3 +87,4 @@ Minimum 3 attempts required before any adjustment.
 - **Frontend** — HTML/CSS/JS, Space Grotesk + Space Mono, Anime.js
 - **DB** — SQLite (zero config, file-based)
 - **Render** — Hosting
+
