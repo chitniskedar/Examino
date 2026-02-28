@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Column, String
 from sqlalchemy.orm import sessionmaker, Session
 from typing import Optional, Generator
 from datetime import datetime
@@ -31,25 +31,34 @@ def save_questions(questions: list[dict], source_file: str, db: Session) -> int:
     inserted = 0
 
     for q in questions:
-        if not db.query(Question).filter_by(question_id=q["question_id"]).first():
-            db.add(Question(
-                question_id      = q["question_id"],
-                question_type    = q["question_type"],
-                question_text    = q["question_text"],
-                options          = q.get("options"),
-                correct_answer   = q["correct_answer"],
+        # Primary dedup: by question_id
+        if db.query(Question).filter_by(question_id=q["question_id"]).first():
+            continue
 
-                topic            = q["topic"],
-                subject          = q.get("subject", "General"),
-                unit             = q.get("unit"),
+        # Secondary dedup: by text_hash (prevents same question from different PDFs)
+        if q.get("text_hash") and db.query(Question).filter_by(text_hash=q["text_hash"]).first():
+            continue
 
-                difficulty_level = q.get("difficulty_level", "medium"),
+        db.add(Question(
+            question_id      = q["question_id"],
+            question_type    = q["question_type"],
+            question_text    = q["question_text"],
+            options          = q.get("options"),
+            correct_answer   = q["correct_answer"],
 
-                source_file      = source_file,
-                source_type      = q.get("source_type"),
-                question_format  = q.get("question_format", "MCQ"),
-            ))
-            inserted += 1
+            topic            = q["topic"],
+            subject          = q.get("subject", "General"),
+            unit             = q.get("unit"),
+
+            difficulty_level = q.get("difficulty_level", "medium"),
+
+            source_file      = source_file,
+            source_type      = q.get("source_type"),
+            question_format  = q.get("question_format", "MCQ"),
+
+            text_hash        = q.get("text_hash"),
+        ))
+        inserted += 1
 
     db.commit()
     return inserted
@@ -98,6 +107,11 @@ def get_subjects(db: Session) -> list[str]:
     return sorted([r[0] for r in rows])
 
 
+def get_units(db: Session, subject: str) -> list[str]:
+    rows = db.query(Question.unit).filter(Question.subject == subject).distinct().all()
+    return sorted([r[0] for r in rows if r[0]])
+
+
 # ── ATTEMPTS ─────────────────────────────────────────────
 
 def record_attempt(
@@ -132,11 +146,9 @@ def get_recent_attempts(db: Session, limit: int = 50) -> list[Attempt]:
 def _update_topic_stats(topic, subject, is_correct, db):
     stats = get_topic_stats(topic, subject, db)
 
-    # If no stats row exists, create it
     if not stats:
         stats = create_topic_stats(topic, subject, db)
 
-    # SAFETY: Prevent NoneType crashes
     if stats.total_attempts is None:
         stats.total_attempts = 0
     if stats.correct_count is None:
@@ -147,7 +159,6 @@ def _update_topic_stats(topic, subject, is_correct, db):
     if is_correct:
         stats.correct_count += 1
 
-    # Update accuracy
     if stats.total_attempts > 0:
         stats.accuracy = stats.correct_count / stats.total_attempts
     

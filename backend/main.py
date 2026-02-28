@@ -5,11 +5,11 @@ Run: uvicorn main:app --reload
 
 import os
 import sys
+import asyncio
 
-# Ensure backend modules resolve correctly
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -27,6 +27,7 @@ from database import (
     get_recent_attempts,
     count_questions,
     get_subjects,
+    get_units,
     SessionLocal,
 )
 
@@ -34,8 +35,22 @@ from question_engine import get_all_preloaded_questions
 from scheduler import adjust_difficulty, get_performance_summary, get_recommended_difficulty
 from models import Question
 
+# PDF + generation imports
+from pdf_service import (
+    extract_text_from_bytes,
+    split_into_sections,
+    infer_metadata,
+    compute_text_hash,
+)
+from llm_question_gen import (
+    generate_mcqs_from_section,
+    assemble_questions,
+    infer_difficulty as llm_infer_difficulty,
+)
+from qb_sync import sync_to_question_bank, get_qb_stats
 
-app = FastAPI(title="Examino API", version="2.0.0")
+
+app = FastAPI(title="Examino API", version="2.1.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -84,12 +99,17 @@ def serve_index():
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    return {"status": "ok", "version": "2.1.0"}
 
 
 @app.get("/subjects")
 def list_subjects(db: Session = Depends(get_db)):
     return get_subjects(db)
+
+
+@app.get("/units")
+def list_units(subject: str, db: Session = Depends(get_db)):
+    return get_units(db, subject)
 
 
 # ── QUESTION LISTING ─────────────────────────────────────────
@@ -113,7 +133,6 @@ def list_questions(
         source=source,
         limit=limit,
     )
-
     return [_serialize(q) for q in qs]
 
 
@@ -215,6 +234,7 @@ def submit_attempt(payload: AnswerPayload, db: Session = Depends(get_db)):
         "correct": is_correct,
         "correct_answer": q.correct_answer,
         "new_difficulty": new_diff,
+        "explanation": "",
     }
 
 
@@ -233,33 +253,165 @@ def recent(db: Session = Depends(get_db)):
 
     return [
         {
-            "attempt_id": a.attempt_id,
-            "question_id": a.question_id,
-            "is_correct": a.is_correct,
-            "topic": a.topic,
-            "subject": a.subject,
-            "difficulty": a.difficulty,
+            "attempt_id":   a.attempt_id,
+            "question_id":  a.question_id,
+            "is_correct":   a.is_correct,
+            "topic":        a.topic,
+            "subject":      a.subject,
+            "difficulty":   a.difficulty,
             "attempted_at": a.attempted_at.isoformat(),
         }
         for a in attempts
     ]
 
 
+# ── PDF UPLOAD + AUTO QUESTION GENERATION ────────────────────
+
+@app.post("/upload-material")
+async def upload_material(
+    file: UploadFile = File(...),
+    subject: Optional[str]  = Form(None),
+    unit:    Optional[str]  = Form(None),
+    topic:   Optional[str]  = Form(None),
+    questions_per_section: int = Form(3),
+    db: Session = Depends(get_db),
+):
+    """
+    Upload a PDF study material.
+    Extracts text → splits sections → generates MCQs → saves to DB.
+
+    Returns a summary: {inserted, skipped_duplicates, sections_processed, questions_generated}
+    """
+    # ── 1. Validate file type ──
+    if not file.filename.lower().endswith(".pdf"):
+        raise HTTPException(400, "Only PDF files are accepted.")
+
+    # ── 2. Read bytes ──
+    file_bytes = await file.read()
+    if len(file_bytes) == 0:
+        raise HTTPException(400, "Uploaded file is empty.")
+
+    # ── 3. Extract text ──
+    try:
+        full_text = extract_text_from_bytes(file_bytes, file.filename)
+    except Exception as e:
+        raise HTTPException(422, f"Could not extract text from PDF: {e}")
+
+    if len(full_text.split()) < 50:
+        raise HTTPException(422, "PDF contains too little extractable text (< 50 words).")
+
+    # ── 4. Infer metadata if not provided ──
+    meta = infer_metadata(full_text, file.filename)
+    resolved_subject = subject or meta["subject"]
+    resolved_unit    = unit    or meta["unit"]
+    resolved_topic   = topic   or meta["topic"]
+
+    # ── 5. Split into sections ──
+    sections = split_into_sections(full_text)
+    if not sections:
+        raise HTTPException(422, "Could not split PDF into sections.")
+
+    # ── 6. Generate questions per section (async) ──
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+
+    all_raw_questions = []
+    tasks = []
+
+    for idx, section in enumerate(sections):
+        difficulty = llm_infer_difficulty(section["content"], idx, len(sections))
+        section_topic = section["title"] if len(section["title"]) > 3 else resolved_topic
+
+        tasks.append(
+            generate_mcqs_from_section(
+                section_text=section["content"],
+                num_questions=questions_per_section,
+                difficulty=difficulty,
+                subject=resolved_subject,
+                topic=section_topic,
+                api_key=api_key,
+            )
+        )
+
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+
+    for idx, (section, result) in enumerate(zip(sections, results)):
+        if isinstance(result, Exception):
+            continue  # Skip failed sections silently
+
+        difficulty    = llm_infer_difficulty(section["content"], idx, len(sections))
+        section_topic = section["title"] if len(section["title"]) > 3 else resolved_topic
+
+        assembled = assemble_questions(
+            raw_questions=result,
+            subject=resolved_subject,
+            unit=resolved_unit,
+            topic=section_topic,
+            difficulty=difficulty,
+            source_file=file.filename,
+        )
+
+        # Attach text_hash for dedup
+        for q in assembled:
+            q["text_hash"] = compute_text_hash(q["question_text"])
+
+        all_raw_questions.extend(assembled)
+
+    # ── 7. Save to DB (with dedup) ──
+    total_generated = len(all_raw_questions)
+    db_inserted = save_questions(all_raw_questions, source_file=file.filename, db=db)
+    db_skipped  = total_generated - db_inserted
+
+    # ── 8. Sync to question_bank.json (master QB) ──
+    qb_result = sync_to_question_bank(
+        questions=all_raw_questions,
+        subject=resolved_subject,
+        source_label=file.filename,
+    )
+
+    return {
+        "status":                "success",
+        "filename":              file.filename,
+        "subject":               resolved_subject,
+        "unit":                  resolved_unit,
+        "topic":                 resolved_topic,
+        "sections_processed":    len(sections),
+        "questions_generated":   total_generated,
+        "db_inserted":           db_inserted,
+        "db_skipped_duplicates": db_skipped,
+        "qb_inserted":           qb_result["inserted"],
+        "qb_skipped_duplicates": qb_result["skipped"],
+        "qb_subject_total":      qb_result["total_in_subject"],
+        "message": (
+            f"Generated {total_generated} questions. "
+            f"DB: +{db_inserted} (skipped {db_skipped}). "
+            f"QB JSON: +{qb_result['inserted']} (skipped {qb_result['skipped']})."
+        ),
+    }
+
+
+# ── QB JSON STATS ────────────────────────────────────────────────────────────
+
+@app.get("/qb-stats")
+def qb_stats():
+    """Returns per-subject question counts in question_bank.json."""
+    return get_qb_stats()
+
+
 # ── SERIALIZER ───────────────────────────────────────────────
 
 def _serialize(q: Question) -> dict:
     return {
-        "question_id": q.question_id,
-        "question_type": q.question_type,
-        "question_text": q.question_text,
-        "options": q.options,
-        "correct_answer": q.correct_answer,
-        "topic": q.topic,
-        "subject": q.subject,
-        "unit": q.unit,
+        "question_id":     q.question_id,
+        "question_type":   q.question_type,
+        "question_text":   q.question_text,
+        "options":         q.options,
+        "correct_answer":  q.correct_answer,
+        "topic":           q.topic,
+        "subject":         q.subject,
+        "unit":            q.unit,
         "difficulty_level": q.difficulty_level,
-        "source_type": q.source_type,
+        "source_type":     q.source_type,
         "question_format": q.question_format,
-        "source_file": q.source_file,
-        "created_at": q.created_at.isoformat() if q.created_at else None,
+        "source_file":     q.source_file,
+        "created_at":      q.created_at.isoformat() if q.created_at else None,
     }

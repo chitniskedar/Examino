@@ -21,8 +21,11 @@ class Question(Base):
     difficulty_level = Column(String,  default="medium")
 
     source_file      = Column(String,  nullable=True)
-    source_type      = Column(String,  nullable=True)     # QB or QnA
-    question_format  = Column(String,  nullable=True)     # MCQ / 2M / 5M converted
+    source_type      = Column(String,  nullable=True)     # QB, QnA, PDF_UPLOAD
+    question_format  = Column(String,  nullable=True)     # MCQ / 2M / 5M
+
+    # Deduplication hash (MD5 of normalised question_text)
+    text_hash        = Column(String,  nullable=True, unique=False, index=True)
 
     created_at       = Column(DateTime, default=datetime.utcnow)
 
