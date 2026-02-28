@@ -129,23 +129,25 @@ def get_recent_attempts(db: Session, limit: int = 50) -> list[Attempt]:
 
 # ── STATS ─────────────────────────────────────────────
 
-def _update_topic_stats(topic: str, subject: str, is_correct: bool, db: Session) -> None:
-    stats = db.query(TopicStats).filter_by(topic=topic).first()
+def _update_topic_stats(topic, subject, is_correct, db):
+    stats = get_topic_stats(topic, subject, db)
 
+    # If no stats row exists, create it
     if not stats:
-        stats = TopicStats(topic=topic, subject=subject)
-        db.add(stats)
+        stats = create_topic_stats(topic, subject, db)
+
+    # SAFETY: Prevent NoneType crashes
+    if stats.total_attempts is None:
+        stats.total_attempts = 0
+    if stats.correct_attempts is None:
+        stats.correct_attempts = 0
 
     stats.total_attempts += 1
 
     if is_correct:
-        stats.correct_count += 1
-
-    stats.accuracy     = stats.correct_count / stats.total_attempts
-    stats.last_updated = datetime.utcnow()
+        stats.correct_attempts += 1
 
     db.commit()
-
 # ── STATS HELPERS ─────────────────────────────────────────────
 
 def get_topic_stats(topic: str, db: Session):

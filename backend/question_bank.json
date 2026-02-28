@@ -2,165 +2,1343 @@
   "Chemistry": [
     {
       "type": "mcq",
-      "q": "The Born-Oppenheimer approximation states that the total energy of a molecule is:",
+      "q": "Vibrational energy levels are:",
       "opts": [
-        "Only the sum of kinetic energies",
-        "The sum of translational, rotational, vibrational and electronic energies",
-        "Only the electronic energy",
-        "The product of all energy levels"
+        "Continuous",
+        "Equally spaced",
+        "Quantized",
+        "Infinite"
       ],
-      "a": "The sum of translational, rotational, vibrational and electronic energies",
+      "a": "Quantized",
+      "topic": "Molecular Spectroscopy",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "UV spectroscopy primarily studies:",
+      "opts": [
+        "Rotational transitions",
+        "Electronic transitions",
+        "Nuclear transitions",
+        "Magnetic transitions"
+      ],
+      "a": "Electronic transitions",
+      "topic": "Molecular Spectroscopy",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Wavenumber unit is:",
+      "opts": [
+        "m",
+        "cm⁻¹",
+        "Hz",
+        "J"
+      ],
+      "a": "cm⁻¹",
+      "topic": "Molecular Spectroscopy",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Energy of photon is:",
+      "opts": [
+        "hν",
+        "h/ν",
+        "ν/h",
+        "hν²"
+      ],
+      "a": "hν",
+      "topic": "Molecular Spectroscopy",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "IR spectroscopy mainly detects:",
+      "opts": [
+        "Bond vibrations",
+        "Electron spin",
+        "Nuclear decay",
+        "Magnetism"
+      ],
+      "a": "Bond vibrations",
+      "topic": "Molecular Spectroscopy",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "For a rigid rotor, rotational energy depends on:",
+      "opts": [
+        "Temperature only",
+        "Moment of inertia",
+        "Pressure",
+        "Volume"
+      ],
+      "a": "Moment of inertia",
       "topic": "Molecular Spectroscopy",
       "unit": "Unit-1",
       "diff": "medium"
     },
-    {"type":"mcq",
- "q":"The Nernst equation for an electrode is E = E° + (0.0591/n)log[Mⁿ⁺]. For a zinc electrode (n=2) with [Zn²⁺] = 0.05M, the correction term is:",
- "opts":["+0.039 V","-0.039 V","+0.0591 V","-0.0591 V"],
- "a":"-0.039 V",
- "topic":"Electrochemistry",
- "unit":"Unit-2",
- "diff":"hard"},
     {
       "type": "mcq",
-      "q": "The standard hydrogen electrode (SHE) has a potential of:",
+      "q": "Moment of inertia increases when bond length:",
       "opts": [
-        "0.00 V",
-        "1.00 V",
-        "-0.76 V",
-        "+0.34 V"
+        "Decreases",
+        "Increases",
+        "Zero",
+        "Constant"
       ],
-      "a": "0.00 V",
+      "a": "Increases",
+      "topic": "Molecular Spectroscopy",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Planck’s constant unit is:",
+      "opts": [
+        "J·s",
+        "J",
+        "s",
+        "C"
+      ],
+      "a": "J·s",
+      "topic": "Molecular Spectroscopy",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Selection rule for rotational transition is:",
+      "opts": [
+        "ΔJ = 0",
+        "ΔJ = ±1",
+        "ΔJ = ±2",
+        "No rule"
+      ],
+      "a": "ΔJ = ±1",
+      "topic": "Molecular Spectroscopy",
+      "unit": "Unit-1",
+      "diff": "hard"
+    },
+    {
+      "type": "mcq",
+      "q": "Rotational constant B is inversely proportional to:",
+      "opts": [
+        "Mass",
+        "Bond length²",
+        "Temperature",
+        "Energy"
+      ],
+      "a": "Bond length²",
+      "topic": "Molecular Spectroscopy",
+      "unit": "Unit-1",
+      "diff": "hard"
+    },
+    {
+      "type": "mcq",
+      "q": "As bond length increases, rotational spectral lines become:",
+      "opts": [
+        "Closer",
+        "Farther apart",
+        "Zero",
+        "Infinite"
+      ],
+      "a": "Closer",
+      "topic": "Molecular Spectroscopy",
+      "unit": "Unit-1",
+      "diff": "hard"
+    },
+    {
+      "type": "mcq",
+      "q": "Unit of electrode potential is:",
+      "opts": [
+        "Ampere",
+        "Volt",
+        "Ohm",
+        "Watt"
+      ],
+      "a": "Volt",
       "topic": "Electrochemistry",
       "unit": "Unit-2",
       "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "If E°cell is positive, reaction is:",
+      "opts": [
+        "Non-spontaneous",
+        "Spontaneous",
+        "Impossible",
+        "Neutral"
+      ],
+      "a": "Spontaneous",
+      "topic": "Electrochemistry",
+      "unit": "Unit-2",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "If E°cell is negative, reaction is:",
+      "opts": [
+        "Spontaneous",
+        "Non-spontaneous",
+        "Equilibrium",
+        "Explosive"
+      ],
+      "a": "Non-spontaneous",
+      "topic": "Electrochemistry",
+      "unit": "Unit-2",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Oxidation occurs at:",
+      "opts": [
+        "Cathode",
+        "Anode",
+        "Salt bridge",
+        "Electrolyte"
+      ],
+      "a": "Anode",
+      "topic": "Electrochemistry",
+      "unit": "Unit-2",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Reduction occurs at:",
+      "opts": [
+        "Anode",
+        "Cathode",
+        "Bridge",
+        "Wire"
+      ],
+      "a": "Cathode",
+      "topic": "Electrochemistry",
+      "unit": "Unit-2",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "If Q = K in Nernst equation, EMF is:",
+      "opts": [
+        "Maximum",
+        "Zero",
+        "Negative",
+        "Infinite"
+      ],
+      "a": "Zero",
+      "topic": "Electrochemistry",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Cell EMF is given by:",
+      "opts": [
+        "E°anode - E°cathode",
+        "E°cathode - E°anode",
+        "Sum",
+        "Product"
+      ],
+      "a": "E°cathode - E°anode",
+      "topic": "Electrochemistry",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Faraday constant is approximately:",
+      "opts": [
+        "96500 C/mol",
+        "1000 C/mol",
+        "8.314",
+        "6.023×10²³"
+      ],
+      "a": "96500 C/mol",
+      "topic": "Electrochemistry",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Salt bridge maintains:",
+      "opts": [
+        "Voltage",
+        "Temperature",
+        "Charge neutrality",
+        "Pressure"
+      ],
+      "a": "Charge neutrality",
+      "topic": "Electrochemistry",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "If concentration doubles, log term in Nernst becomes:",
+      "opts": [
+        "Positive",
+        "Negative",
+        "Zero",
+        "Constant"
+      ],
+      "a": "Positive",
+      "topic": "Electrochemistry",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Higher standard reduction potential means:",
+      "opts": [
+        "Better oxidizing agent",
+        "Better reducing agent",
+        "No reaction",
+        "Lower reactivity"
+      ],
+      "a": "Better oxidizing agent",
+      "topic": "Electrochemistry",
+      "unit": "Unit-2",
+      "diff": "hard"
+    },
+    {
+      "type": "mcq",
+      "q": "At equilibrium ΔG is:",
+      "opts": [
+        "Positive",
+        "Zero",
+        "Negative",
+        "Infinite"
+      ],
+      "a": "Zero",
+      "topic": "Electrochemistry",
+      "unit": "Unit-2",
+      "diff": "hard"
+    },
+    {
+      "type": "mcq",
+      "q": "Relation between ΔG and Ecell:",
+      "opts": [
+        "ΔG = nFE",
+        "ΔG = -nFE",
+        "ΔG = FE",
+        "ΔG = nE"
+      ],
+      "a": "ΔG = -nFE",
+      "topic": "Electrochemistry",
+      "unit": "Unit-2",
+      "diff": "hard"
+    },
+    {
+      "type": "mcq",
+      "q": "Increasing n in ΔG = -nFE makes ΔG:",
+      "opts": [
+        "More negative",
+        "More positive",
+        "Zero",
+        "Independent"
+      ],
+      "a": "More negative",
+      "topic": "Electrochemistry",
+      "unit": "Unit-2",
+      "diff": "hard"
     }
   ],
-
   "EEE": [
     {
       "type": "mcq",
-      "q": "KCL states that at any node:",
+      "q": "Ohm’s law states V =",
       "opts": [
-        "Sum of all voltages is zero",
-        "Sum of currents entering equals sum of currents leaving",
-        "Total power is zero",
-        "Sum of resistances equals total resistance"
+        "IR",
+        "I/R",
+        "R/I",
+        "I²R"
       ],
-      "a": "Sum of currents entering equals sum of currents leaving",
+      "a": "IR",
       "topic": "Network Theorems",
       "unit": "Unit-1",
       "diff": "easy"
     },
     {
       "type": "mcq",
-      "q": "The RMS value of a sinusoidal waveform with peak value Vm is:",
+      "q": "Total resistance in series is:",
       "opts": [
-        "Vm",
-        "Vm/2",
-        "Vm/√2",
-        "Vm×√2"
+        "Product",
+        "Sum",
+        "Reciprocal sum",
+        "Zero"
       ],
-      "a": "Vm/√2",
+      "a": "Sum",
+      "topic": "Network Theorems",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "In series circuit current is:",
+      "opts": [
+        "Different",
+        "Same",
+        "Zero",
+        "Infinite"
+      ],
+      "a": "Same",
+      "topic": "Network Theorems",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "In parallel circuit voltage is:",
+      "opts": [
+        "Different",
+        "Same",
+        "Zero",
+        "Infinite"
+      ],
+      "a": "Same",
+      "topic": "Network Theorems",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Total resistance in parallel is:",
+      "opts": [
+        "Sum",
+        "Product",
+        "Reciprocal sum",
+        "Difference"
+      ],
+      "a": "Reciprocal sum",
+      "topic": "Network Theorems",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Impedance unit is:",
+      "opts": [
+        "Volt",
+        "Ohm",
+        "Ampere",
+        "Henry"
+      ],
+      "a": "Ohm",
       "topic": "AC Circuits",
       "unit": "Unit-2",
       "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Reactance of inductor increases with:",
+      "opts": [
+        "Frequency",
+        "Time",
+        "Resistance",
+        "Voltage"
+      ],
+      "a": "Frequency",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Unit of frequency is:",
+      "opts": [
+        "Hz",
+        "Ohm",
+        "Volt",
+        "Henry"
+      ],
+      "a": "Hz",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Angular frequency ω =",
+      "opts": [
+        "2πf",
+        "f/2π",
+        "πf",
+        "f²"
+      ],
+      "a": "2πf",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Impedance of resistor is:",
+      "opts": [
+        "R",
+        "jωL",
+        "1/jωC",
+        "ωR"
+      ],
+      "a": "R",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Impedance of inductor is:",
+      "opts": [
+        "R",
+        "jωL",
+        "1/jωC",
+        "0"
+      ],
+      "a": "jωL",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Impedance of capacitor is:",
+      "opts": [
+        "R",
+        "jωL",
+        "1/jωC",
+        "ωC"
+      ],
+      "a": "1/jωC",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Reactance of capacitor decreases with:",
+      "opts": [
+        "Frequency",
+        "Temperature",
+        "Voltage",
+        "Resistance"
+      ],
+      "a": "Frequency",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Purely inductive circuit power factor is:",
+      "opts": [
+        "1",
+        "0",
+        "0.5",
+        "√2"
+      ],
+      "a": "0",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Purely capacitive circuit power factor is:",
+      "opts": [
+        "1",
+        "0",
+        "0.8",
+        "0.5"
+      ],
+      "a": "0",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Apparent power unit is:",
+      "opts": [
+        "W",
+        "VAR",
+        "VA",
+        "J"
+      ],
+      "a": "VA",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Reactive power unit is:",
+      "opts": [
+        "W",
+        "VA",
+        "VAR",
+        "Hz"
+      ],
+      "a": "VAR",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "In resonance, XL equals:",
+      "opts": [
+        "XC",
+        "R",
+        "0",
+        "Infinite"
+      ],
+      "a": "XC",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Power in AC circuit P =",
+      "opts": [
+        "VI",
+        "VIcosφ",
+        "VI²",
+        "V²I"
+      ],
+      "a": "VIcosφ",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "hard"
+    },
+    {
+      "type": "mcq",
+      "q": "In RLC series circuit at resonance, impedance is:",
+      "opts": [
+        "Minimum",
+        "Maximum",
+        "Zero",
+        "Infinite"
+      ],
+      "a": "Minimum",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "hard"
+    },
+    {
+      "type": "mcq",
+      "q": "At resonance, power factor is:",
+      "opts": [
+        "0",
+        "1",
+        "0.5",
+        "Infinite"
+      ],
+      "a": "1",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "hard"
+    },
+    {
+      "type": "mcq",
+      "q": "Resonant frequency is:",
+      "opts": [
+        "1/2π√LC",
+        "2π√LC",
+        "√LC",
+        "LC"
+      ],
+      "a": "1/2π√LC",
+      "topic": "AC Circuits",
+      "unit": "Unit-2",
+      "diff": "hard"
     }
   ],
-
   "EPD": [
     {
       "type": "mcq",
-      "q": "A PN junction diode under forward bias has its depletion region:",
+      "q": "Ideal diode resistance in forward bias is:",
       "opts": [
-        "Widened",
-        "Narrowed",
-        "Unchanged",
-        "Completely eliminated always"
+        "Zero",
+        "Infinite",
+        "High",
+        "Variable"
       ],
-      "a": "Narrowed",
+      "a": "Zero",
       "topic": "Diodes",
       "unit": "Unit-1",
       "diff": "easy"
     },
     {
       "type": "mcq",
-      "q": "The ripple factor of a full-wave rectifier is approximately:",
+      "q": "In reverse bias, current is mainly:",
       "opts": [
-        "1.21",
-        "0.48",
-        "0.82",
-        "2.00"
+        "High",
+        "Zero",
+        "Very small",
+        "Infinite"
       ],
-      "a": "0.48",
+      "a": "Very small",
+      "topic": "Diodes",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Diode conducts when applied voltage exceeds:",
+      "opts": [
+        "Barrier potential",
+        "Temperature",
+        "Zero",
+        "Infinite"
+      ],
+      "a": "Barrier potential",
+      "topic": "Diodes",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Forward bias reduces barrier potential by:",
+      "opts": [
+        "Increasing it",
+        "Reducing it",
+        "Removing doping",
+        "Cooling junction"
+      ],
+      "a": "Reducing it",
+      "topic": "Diodes",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Depletion region contains:",
+      "opts": [
+        "Free electrons",
+        "Holes",
+        "Immobile ions",
+        "Neutral atoms"
+      ],
+      "a": "Immobile ions",
+      "topic": "Diodes",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Barrier potential for germanium is:",
+      "opts": [
+        "0.3V",
+        "0.7V",
+        "1V",
+        "5V"
+      ],
+      "a": "0.3V",
+      "topic": "Diodes",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Ripple frequency of half-wave rectifier equals:",
+      "opts": [
+        "f",
+        "2f",
+        "f/2",
+        "0"
+      ],
+      "a": "f",
+      "topic": "Rectifiers",
+      "unit": "Unit-2",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Bridge rectifier uses how many diodes?",
+      "opts": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "a": "4",
+      "topic": "Rectifiers",
+      "unit": "Unit-2",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Center-tap full wave rectifier uses:",
+      "opts": [
+        "1 diode",
+        "2 diodes",
+        "4 diodes",
+        "No diode"
+      ],
+      "a": "2 diodes",
+      "topic": "Rectifiers",
+      "unit": "Unit-2",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Efficiency of half wave rectifier is:",
+      "opts": [
+        "40.6%",
+        "81.2%",
+        "100%",
+        "50%"
+      ],
+      "a": "40.6%",
       "topic": "Rectifiers",
       "unit": "Unit-2",
       "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Form factor is:",
+      "opts": [
+        "RMS/Avg",
+        "Avg/RMS",
+        "Peak/RMS",
+        "RMS/Peak"
+      ],
+      "a": "RMS/Avg",
+      "topic": "Rectifiers",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Ripple factor indicates:",
+      "opts": [
+        "DC content",
+        "AC content",
+        "Voltage drop",
+        "Efficiency"
+      ],
+      "a": "AC content",
+      "topic": "Rectifiers",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Peak inverse voltage for bridge rectifier is:",
+      "opts": [
+        "Vm",
+        "2Vm",
+        "Vm/2",
+        "0"
+      ],
+      "a": "Vm",
+      "topic": "Rectifiers",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Efficiency improves in full-wave because:",
+      "opts": [
+        "Both half cycles used",
+        "Less diodes",
+        "Lower frequency",
+        "Higher ripple"
+      ],
+      "a": "Both half cycles used",
+      "topic": "Rectifiers",
+      "unit": "Unit-2",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Transformer utilization factor of full wave is greater than:",
+      "opts": [
+        "Half wave",
+        "Zero",
+        "1",
+        "Bridge only"
+      ],
+      "a": "Half wave",
+      "topic": "Rectifiers",
+      "unit": "Unit-2",
+      "diff": "hard"
     }
   ],
-
   "EVS": [
     {
       "type": "mcq",
-      "q": "What are 'keystone species'?",
+      "q": "Top carnivores are called:",
       "opts": [
-        "Species which cannot undergo evolution",
-        "Species which do not affect the ecosystem",
-        "Species whose elimination seriously affects the ecosystem",
-        "Species which are currently evolving"
+        "Producers",
+        "Primary consumers",
+        "Apex predators",
+        "Decomposers"
       ],
-      "a": "Species whose elimination seriously affects the ecosystem",
+      "a": "Apex predators",
+      "topic": "Ecosystems",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Coal formation takes:",
+      "opts": [
+        "Years",
+        "Millions of years",
+        "Days",
+        "Hours"
+      ],
+      "a": "Millions of years",
+      "topic": "Resources",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Food chain always starts with:",
+      "opts": [
+        "Carnivore",
+        "Producer",
+        "Decomposer",
+        "Omnivore"
+      ],
+      "a": "Producer",
+      "topic": "Ecosystems",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Hydropower depends on:",
+      "opts": [
+        "Wind",
+        "Sun",
+        "Water flow",
+        "Coal"
+      ],
+      "a": "Water flow",
+      "topic": "Resources",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Non-renewable resource example:",
+      "opts": [
+        "Solar",
+        "Wind",
+        "Petroleum",
+        "Geothermal"
+      ],
+      "a": "Petroleum",
+      "topic": "Resources",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Biotic components include:",
+      "opts": [
+        "Air",
+        "Water",
+        "Plants",
+        "Soil"
+      ],
+      "a": "Plants",
+      "topic": "Ecosystems",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Abiotic components include:",
+      "opts": [
+        "Animals",
+        "Plants",
+        "Microbes",
+        "Water"
+      ],
+      "a": "Water",
+      "topic": "Ecosystems",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Fossil fuels are formed from:",
+      "opts": [
+        "Sunlight",
+        "Ancient organisms",
+        "Water",
+        "Wind"
+      ],
+      "a": "Ancient organisms",
+      "topic": "Resources",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Solar energy is considered perpetual because:",
+      "opts": [
+        "Unlimited coal",
+        "Continuous supply",
+        "No usage",
+        "Stored underground"
+      ],
+      "a": "Continuous supply",
+      "topic": "Resources",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Solar panels convert:",
+      "opts": [
+        "Heat to electricity",
+        "Light to electricity",
+        "Wind to heat",
+        "Water to fuel"
+      ],
+      "a": "Light to electricity",
+      "topic": "Resources",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Energy pyramid is always:",
+      "opts": [
+        "Inverted",
+        "Upright",
+        "Flat",
+        "Circular"
+      ],
+      "a": "Upright",
       "topic": "Ecosystems",
       "unit": "Unit-1",
       "diff": "medium"
     },
     {
       "type": "mcq",
-      "q": "Which is NOT a renewable energy source?",
+      "q": "Energy lost between trophic levels is mainly as:",
       "opts": [
-        "Coal",
-        "Wind",
-        "Solar",
-        "Geothermal"
+        "Light",
+        "Heat",
+        "Water",
+        "Mass"
       ],
-      "a": "Coal",
-      "topic": "Resources",
+      "a": "Heat",
+      "topic": "Ecosystems",
       "unit": "Unit-1",
-      "diff": "easy"
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Biomagnification affects mostly:",
+      "opts": [
+        "Producers",
+        "Top carnivores",
+        "Soil",
+        "Water only"
+      ],
+      "a": "Top carnivores",
+      "topic": "Ecosystems",
+      "unit": "Unit-1",
+      "diff": "hard"
     }
   ],
-
   "MES": [
     {
       "type": "mcq",
-      "q": "The Zeroth Law of Thermodynamics forms the basis for:",
+      "q": "Heat engine efficiency is always:",
       "opts": [
-        "Work measurement",
-        "Temperature measurement",
-        "Entropy calculation",
-        "Enthalpy calculation"
+        "100%",
+        "<100%",
+        ">100%",
+        "Infinite"
       ],
-      "a": "Temperature measurement",
+      "a": "<100%",
       "topic": "Thermodynamics",
       "unit": "Unit-1",
       "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Specific heat at constant volume is:",
+      "opts": [
+        "Cv",
+        "Cp",
+        "R",
+        "γ"
+      ],
+      "a": "Cv",
+      "topic": "Thermodynamics",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Isothermal process means:",
+      "opts": [
+        "Constant pressure",
+        "Constant volume",
+        "Constant temperature",
+        "Constant heat"
+      ],
+      "a": "Constant temperature",
+      "topic": "Thermodynamics",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "First law equation is:",
+      "opts": [
+        "Q = W",
+        "ΔU = Q − W",
+        "Q = ΔU",
+        "W = ΔU"
+      ],
+      "a": "ΔU = Q − W",
+      "topic": "Thermodynamics",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Cp is always:",
+      "opts": [
+        "< Cv",
+        "= Cv",
+        "> Cv",
+        "Zero"
+      ],
+      "a": "> Cv",
+      "topic": "Thermodynamics",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "γ =",
+      "opts": [
+        "Cp/Cv",
+        "Cv/Cp",
+        "Cp-Cv",
+        "Cv-Cp"
+      ],
+      "a": "Cp/Cv",
+      "topic": "Thermodynamics",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Kelvin scale is based on:",
+      "opts": [
+        "Water freezing",
+        "Water boiling",
+        "Absolute zero",
+        "Pressure"
+      ],
+      "a": "Absolute zero",
+      "topic": "Thermodynamics",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Adiabatic process means:",
+      "opts": [
+        "Heat exchange",
+        "No heat exchange",
+        "Constant temp",
+        "Constant volume"
+      ],
+      "a": "No heat exchange",
+      "topic": "Thermodynamics",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Internal energy of ideal gas depends only on:",
+      "opts": [
+        "Pressure",
+        "Volume",
+        "Temperature",
+        "Heat"
+      ],
+      "a": "Temperature",
+      "topic": "Thermodynamics",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Work done in isothermal ideal gas process depends on:",
+      "opts": [
+        "Pressure only",
+        "Volume change",
+        "Temperature only",
+        "Mass"
+      ],
+      "a": "Volume change",
+      "topic": "Thermodynamics",
+      "unit": "Unit-1",
+      "diff": "hard"
     }
   ],
-
   "Statics": [
     {
       "type": "mcq",
-      "q": "A body is in static equilibrium when:",
+      "q": "Force is a:",
       "opts": [
-        "Net force is zero only",
-        "Net moment is zero only",
-        "Both net force and net moment are zero",
-        "Velocity is constant"
+        "Vector",
+        "Scalar",
+        "Tensor",
+        "Constant"
       ],
-      "a": "Both net force and net moment are zero",
+      "a": "Vector",
       "topic": "Equilibrium",
       "unit": "Unit-1",
       "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Unit of moment is:",
+      "opts": [
+        "N",
+        "Nm",
+        "J",
+        "Pa"
+      ],
+      "a": "Nm",
+      "topic": "Equilibrium",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "For equilibrium in x-direction:",
+      "opts": [
+        "ΣFx = 0",
+        "ΣFy = 0",
+        "ΣM = 0",
+        "All zero"
+      ],
+      "a": "ΣFx = 0",
+      "topic": "Equilibrium",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Resultant of concurrent forces is found using:",
+      "opts": [
+        "Vector addition",
+        "Scalar addition",
+        "Multiplication",
+        "Division"
+      ],
+      "a": "Vector addition",
+      "topic": "Equilibrium",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "Unit of force is:",
+      "opts": [
+        "N",
+        "J",
+        "Pa",
+        "W"
+      ],
+      "a": "N",
+      "topic": "Equilibrium",
+      "unit": "Unit-1",
+      "diff": "easy"
+    },
+    {
+      "type": "mcq",
+      "q": "For planar rigid body equilibrium:",
+      "opts": [
+        "1 eqn",
+        "2 eqns",
+        "3 eqns",
+        "6 eqns"
+      ],
+      "a": "3 eqns",
+      "topic": "Equilibrium",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "If resultant force passes through pivot, moment is:",
+      "opts": [
+        "Maximum",
+        "Zero",
+        "Negative",
+        "Infinite"
+      ],
+      "a": "Zero",
+      "topic": "Equilibrium",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "If all forces meet at one point, system is:",
+      "opts": [
+        "Parallel",
+        "Concurrent",
+        "Couple",
+        "Zero"
+      ],
+      "a": "Concurrent",
+      "topic": "Equilibrium",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Couple produces:",
+      "opts": [
+        "Translation",
+        "Rotation only",
+        "Zero",
+        "Linear motion"
+      ],
+      "a": "Rotation only",
+      "topic": "Equilibrium",
+      "unit": "Unit-1",
+      "diff": "medium"
+    },
+    {
+      "type": "mcq",
+      "q": "Two-force member in equilibrium must have forces:",
+      "opts": [
+        "Parallel",
+        "Equal and opposite",
+        "Random",
+        "Zero"
+      ],
+      "a": "Equal and opposite",
+      "topic": "Equilibrium",
+      "unit": "Unit-1",
+      "diff": "hard"
     }
   ]
 }
